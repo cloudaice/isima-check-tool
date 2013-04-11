@@ -16,7 +16,7 @@ db = cnn['isima']
 
 class Home(web.RequestHandler):
     def get(self):
-        self.render('base.html')
+        self.render('home.html')
     
     def post(self):
         pass
