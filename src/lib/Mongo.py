@@ -1,0 +1,16 @@
+#-*-coding: utf-8-*-
+# @author: xiangchao<cloudaice@gmail.com>
+# @file: Mongodb common connections
+
+from pymongo import Connection
+cnn = None
+
+
+def conn():
+    """
+    Mongodb connections pool
+    """
+    global cnn
+    if cnn is None:
+        cnn = Connection('localhost', 27017, max_pool_size=10)
+        return cnn
