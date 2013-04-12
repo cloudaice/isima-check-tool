@@ -6,11 +6,11 @@ from pymongo import Connection
 cnn = None
 
 
-def conn():
+def conn(host, port):
     """
     Mongodb connections pool
     """
     global cnn
     if cnn is None:
-        cnn = Connection('localhost', 27017, max_pool_size=10)
+        cnn = Connection(host, port, max_pool_size=10)
         return cnn

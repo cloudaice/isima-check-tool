@@ -10,19 +10,20 @@ from tornado.httpserver import HTTPServer
 from tornado.options import define, parse_command_line, options
 
 
-cnn = Mongo.conn()
-db = cnn['isima']
-
-define("port", default=8000, help='run on the given port', type=int)
-define("host", default='127.0.0.1', help="run on the given host", type=str)
+define("host", default="127.0.0.1", help="run on the given host")
+define("port", default=8000, help="run on the given port", type=int)
+define("mongo_host", default="localhost", help="isima mongo host")
+define("mongo_port", default=27017, help="run on default port", type=int)
 
 
 class Application(web.Application):
     def __init__(self):
         settings = {
-            'static_path': os.path.join(os.path.dirname(__file__), 'static'),
-            'template_path': os.path.join(os.path.dirname(__file__), 'template'),
-            'debug': True
+            "static_path": os.path.join(os.path.dirname(__file__), 'static'),
+            "template_path": os.path.join(os.path.dirname(__file__), 'template'),
+            "cookie_secret": "__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
+            "login_url": "/login",
+            "debug": False
         }
 
         handlers = [
@@ -35,32 +36,41 @@ class Application(web.Application):
 
         web.Application.__init__(self, handlers, **settings)
 
-class BaseHandler(web.RequestHandler):
-    def get_current
+        self.db = Mongo.conn(options.mongo_host, options.mongo_port)['isima']
 
-class Home(web.RequestHandler):
+
+class BaseHandler(web.RequestHandler):
+    @property
+    def db(self):
+        return self.application.db
+    
+    def get_current_user(self):
+        user_id = self.get_secure_cookie("isima_user")
+        if not user_id:
+            return None
+        # this may instead of real user
+        return user_id
+
+
+class Home(BaseHandler):
+    @web.authenticated
     def get(self):
         self.render('home.html')
-    
-    def post(self):
-        pass
 
 
-class About(web.RequestHandler):
+class About(BaseHandler):
     def get(self):
         self.render('about.html')
 
 
-class Contact(web.RequestHandler):
+class Contact(BaseHandler):
     def get(self):
         self.render('home.html')
 
 
-class Login(web.RequestHandler):
+class Login(BaseHandler):
     def get(self):
         self.render('login.html')
-
-
 
 
 def main():
