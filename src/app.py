@@ -23,7 +23,7 @@ class Application(web.Application):
             "template_path": os.path.join(os.path.dirname(__file__), 'template'),
             "cookie_secret": "__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
             "login_url": "/login",
-            "debug": False
+            "debug": True
         }
 
         handlers = [
@@ -70,7 +70,7 @@ class Contact(BaseHandler):
 
 class Login(BaseHandler):
     def get(self):
-        self.render('login.html')
+        self.render('login2.html')
 
 
 def main():
