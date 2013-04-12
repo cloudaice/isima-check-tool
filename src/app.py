@@ -53,7 +53,6 @@ class BaseHandler(web.RequestHandler):
 
 
 class Home(BaseHandler):
-    @web.authenticated
     def get(self):
         self.render('home.html')
 
@@ -70,7 +69,19 @@ class Contact(BaseHandler):
 
 class Login(BaseHandler):
     def get(self):
+        self.set_cookie('checking', 'true')
         self.render('login2.html')
+
+    def post(self):
+        #判断浏览器是否启用了cookie
+        if not self.get_cookie("checking"):
+            self.write("please enable cookies!")
+
+
+class User(BaseHandler):
+    @web.authenticated
+    def get(self):
+        pass
 
 
 def main():
