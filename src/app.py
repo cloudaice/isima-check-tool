@@ -31,6 +31,10 @@ class Contact(web.RequestHandler):
     def get(self):
         self.render('home.html')
 
+class Login(web.RequestHandler):
+    def get(self):
+        self.render('login.html')
+
 settings = {
     'static_path': os.path.join(os.path.dirname(__file__), 'static'),
     'template_path': os.path.join(os.path.dirname(__file__), 'template'),
@@ -41,6 +45,7 @@ settings = {
 application = web.Application([(r'/', Home),
                                (r'/about', About),
                                (r'/contact', Contact),
+                               (r'/login', Login),
                                (r'/favicon.ico', web.StaticFileHandler,
                                    {'path': settings['static_path']}),
                                ], **settings
