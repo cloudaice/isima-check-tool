@@ -23,6 +23,7 @@ class Application(web.Application):
             "template_path": os.path.join(os.path.dirname(__file__), 'template'),
             "cookie_secret": "__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
             "login_url": "/login",
+            "xsrf_cookies": False,
             "debug": True
         }
 
@@ -69,7 +70,8 @@ class Contact(BaseHandler):
 
 class Login(BaseHandler):
     def get(self):
-        self.set_cookie('checking', 'true')
+        if not self.get_cookie("checking"):
+            self.set_cookie('checking', 'true')
         self.render('login2.html')
 
     def post(self):
