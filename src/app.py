@@ -78,6 +78,7 @@ class Login(BaseHandler):
         #判断浏览器是否启用了cookie
         if not self.get_cookie("checking"):
             self.write("please enable cookies!")
+            self.finish()
 
 
 class User(BaseHandler):
