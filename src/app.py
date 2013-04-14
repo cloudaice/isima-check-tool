@@ -79,6 +79,38 @@ class Login(BaseHandler):
         if not self.get_cookie("checking"):
             self.write("please enable cookies!")
             self.finish()
+        username = self.get_argument("username", None)
+        password = self.get_argument("password", None)
+        rememberme = self.get_argument("rememberme", None)
+        docs = self.db.Student.find({}, {"username": 1})
+        docs = [doc["username"] for doc in docs]
+        if username in docs:
+            self.set_secure_cookie("isima_user", username)
+            self.write("you are student")
+            self.finish()
+        docs = self.db.Teacher.find({}, {"username": 1})
+        docs = [doc["username"] for doc in docs]
+        if username in docs:
+            self.set_secure_cookie("isima_user", username)
+            self.write("you are teacher")
+            self.finish()
+        docs = self.db.Faculty.find({}, {"username": 1})
+        docs = [doc["username"] for doc in docs]
+        if username in docs:
+            self.set_secure_cookie("isima_user", username)
+            self.write("you are faculty")
+            self.finish()
+        docs = self.db.Admin.find({}, {"username": 1})
+        docs = [doc["username"] for doc in docs]
+        if username in docs:
+            self.set_secure_cookie("isima_user", username)
+            self.write("you are admin")
+            self.finish()
+        self.write("no this user")
+        self.finish()
+        print username
+        print password
+        print rememberme
 
 
 class User(BaseHandler):

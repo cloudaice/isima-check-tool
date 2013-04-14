@@ -31,18 +31,22 @@
         margin-bottom: 15px;
         padding: 7px 9px;
       }
-
     </style>
-
-      <form class="form-signin">
+      
+      <div class="alert alert-success">
+          <p id="success"></p>
+      </div>
+      <form id="loginform" class="form-signin" action="/login" method="post">
         <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" class="input-block-level" placeholder="Username">
-        <input type="password" class="input-block-level" placeholder="Password">
+        <input type="text" class="input-block-level" name="username" placeholder="Username">
+        <input type="password" class="input-block-level" name="password" placeholder="Password">
         <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Remember me
+          <input type="checkbox" value="rememberme" name="rememberme"> Remember me
         </label>
         <button class="btn btn-large btn-primary" type="submit">Sign in</button>
       </form>
-   
-
+{% end %}
+{% block script %}
+<script type="text/javascript" src="/static/js/jquery.form.js"></script>
+<script type="text/javascript" src="/static/js/login.js"></script>
 {% end %}
