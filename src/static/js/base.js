@@ -9,7 +9,9 @@ $(document).ready(function(){
     $(idname).addClass('active');
     }    
     if ($.cookie("isima_user")){
+        var username = $.cookie("username")
         $("#login").html("<a href='/logout'>Logout</a>");
+        $("#home").html("<a href='/user/" + username +"'>Home</a>")
     }else{
         $("#login").html("<a href='/login'>Login</a>");
     }
