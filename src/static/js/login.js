@@ -15,7 +15,11 @@ $(document).ready(function(){
             $("#alert_result").addClass("alert alert-error");
             $("#alert_result").html(data.msg);
         }else{
-            location.href = "/"
+            var split_data = data.direct.split("/")
+            username = split_data[split_data.length-1]
+            $.cookie("username", username)
+            $.cookie("type", data.type)
+            location.href = data.direct
         }
     }
     var options = {
