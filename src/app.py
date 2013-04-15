@@ -112,7 +112,7 @@ class Login(BaseHandler):
         docs = self.db.Faculty.find({}, {"username": 1})
         docs = [doc["username"] for doc in docs]
         if username in docs:
-            self.auth_password()
+            self.auth_password(password)
             if not rememberme:
                 self.set_secure_cookie("isima_user", username, expires_days=1)
             else:
@@ -122,7 +122,7 @@ class Login(BaseHandler):
         docs = self.db.Admin.find({}, {"username": 1})
         docs = [doc["username"] for doc in docs]
         if username in docs:
-            self.auth_password()
+            self.auth_password(password)
             if not rememberme:
                 self.set_secure_cookie("isima_user", username, expires_days=1)
             else:

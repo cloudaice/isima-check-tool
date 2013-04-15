@@ -11,8 +11,12 @@ $(document).ready(function(){
         return true
     }
     function success_do(data){
-        console.debug(data.status);
-        console.debug(data.msg);
+        if (data.status == "error"){
+            $("#alert_result").addClass("alert alert-error");
+            $("#alert_result").html(data.msg);
+        }else{
+            location.href = "/"
+        }
     }
     var options = {
         target:"#alert_result",
