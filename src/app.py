@@ -8,6 +8,7 @@ from tornado import web
 from tornado import ioloop
 from tornado.httpserver import HTTPServer
 from tornado.options import define, parse_command_line, options
+from tornado.escape import json_encode
 
 
 define("host", default="127.0.0.1", help="run on the given host")
@@ -96,7 +97,7 @@ class Login(BaseHandler):
                 self.set_secure_cookie("isima_user", username, expires_days=1)
             else:
                 self.set_secure_cookie("isima_user", username)
-            self.write("you are student")
+            self.write(json_encode({"status": "success", "msg": "you are student"}))
             self.finish()
         docs = self.db.Teacher.find({}, {"username": 1})
         docs = [doc["username"] for doc in docs]
@@ -106,7 +107,7 @@ class Login(BaseHandler):
                 self.set_secure_coolie("isima_user", username, expires_days=1)
             else:
                 self.set_secure_cookie("isima_user", username)
-            self.write("you are teacher")
+            self.write(json_encode({"status": "success", "msg": "you are teacher"}))
             self.finish()
         docs = self.db.Faculty.find({}, {"username": 1})
         docs = [doc["username"] for doc in docs]
@@ -116,7 +117,7 @@ class Login(BaseHandler):
                 self.set_secure_cookie("isima_user", username, expires_days=1)
             else:
                 self.set_secure_cookie("isima_user", username)
-            self.write("you are faculty")
+            self.write(json_encode({"status": "success", "msg": "you are faculty"}))
             self.finish()
         docs = self.db.Admin.find({}, {"username": 1})
         docs = [doc["username"] for doc in docs]
@@ -126,9 +127,9 @@ class Login(BaseHandler):
                 self.set_secure_cookie("isima_user", username, expires_days=1)
             else:
                 self.set_secure_cookie("isima_user", username)
-            self.write("you are admin")
+            self.write(json_encode({"status": "success", "msg": "you are admin"}))
             self.finish()
-        self.write("no this user")
+        self.write(json_encode({"status": 'error', "msg": "no this user"}))
         self.finish()
 
 
