@@ -74,6 +74,12 @@ class Login(BaseHandler):
             self.set_cookie('checking', 'true')
         self.render('login2.html')
 
+    def auth_password(self, password):
+        """
+        do something auth the password
+        """
+        pass
+
     def post(self):
         #判断浏览器是否启用了cookie
         if not self.get_cookie("checking"):
@@ -85,32 +91,45 @@ class Login(BaseHandler):
         docs = self.db.Student.find({}, {"username": 1})
         docs = [doc["username"] for doc in docs]
         if username in docs:
-            self.set_secure_cookie("isima_user", username)
+            self.auth_password(password)
+            if not rememberme:
+                self.set_secure_cookie("isima_user", username, expires_days=1)
+            else:
+                self.set_secure_cookie("isima_user", username)
             self.write("you are student")
             self.finish()
         docs = self.db.Teacher.find({}, {"username": 1})
         docs = [doc["username"] for doc in docs]
         if username in docs:
-            self.set_secure_cookie("isima_user", username)
+            self.auth_password(password)
+            if not rememberme:
+                self.set_secure_coolie("isima_user", username, expires_days=1)
+            else:
+                self.set_secure_cookie("isima_user", username)
             self.write("you are teacher")
             self.finish()
         docs = self.db.Faculty.find({}, {"username": 1})
         docs = [doc["username"] for doc in docs]
         if username in docs:
-            self.set_secure_cookie("isima_user", username)
+            self.auth_password()
+            if not rememberme:
+                self.set_secure_cookie("isima_user", username, expires_days=1)
+            else:
+                self.set_secure_cookie("isima_user", username)
             self.write("you are faculty")
             self.finish()
         docs = self.db.Admin.find({}, {"username": 1})
         docs = [doc["username"] for doc in docs]
         if username in docs:
-            self.set_secure_cookie("isima_user", username)
+            self.auth_password()
+            if not rememberme:
+                self.set_secure_cookie("isima_user", username, expires_days=1)
+            else:
+                self.set_secure_cookie("isima_user", username)
             self.write("you are admin")
             self.finish()
         self.write("no this user")
         self.finish()
-        print username
-        print password
-        print rememberme
 
 
 class User(BaseHandler):
