@@ -29,12 +29,13 @@ class Application(web.Application):
         }
 
         handlers = [
-            (r'/', Home),
-            (r'/about', About),
-            (r'/contact', Contact),
-            (r'/login', Login),
-            (r'/logout', Logout),
-            (r'/favicon.ico', web.StaticFileHandler, dict(path=settings['static_path'])),
+            (r"/", Home),
+            (r"/about", About),
+            (r"/contact", Contact),
+            (r"/user/([^/]+)", User),
+            (r"/login", Login),
+            (r"/logout", Logout),
+            (r"/favicon.ico", web.StaticFileHandler, dict(path=settings['static_path'])),
         ]
 
         web.Application.__init__(self, handlers, **settings)
@@ -98,8 +99,13 @@ class Login(BaseHandler):
                 self.set_secure_cookie("isima_user", username, expires_days=1)
             else:
                 self.set_secure_cookie("isima_user", username)
-            self.write(json_encode({"status": "success", "msg": "you are student"}))
+            self.write(json_encode({
+                "status": "success",
+                "direct": "/user/" + username,
+                "type": "student"
+            }))
             self.finish()
+            return
         docs = self.db.Teacher.find({}, {"username": 1})
         docs = [doc["username"] for doc in docs]
         if username in docs:
@@ -108,8 +114,13 @@ class Login(BaseHandler):
                 self.set_secure_coolie("isima_user", username, expires_days=1)
             else:
                 self.set_secure_cookie("isima_user", username)
-            self.write(json_encode({"status": "success", "msg": "you are teacher"}))
+            self.write(json_encode({
+                "status": "success",
+                "direct": "/user/" + username,
+                "type": "teacher"
+            }))
             self.finish()
+            return
         docs = self.db.Faculty.find({}, {"username": 1})
         docs = [doc["username"] for doc in docs]
         if username in docs:
@@ -118,8 +129,13 @@ class Login(BaseHandler):
                 self.set_secure_cookie("isima_user", username, expires_days=1)
             else:
                 self.set_secure_cookie("isima_user", username)
-            self.write(json_encode({"status": "success", "msg": "you are faculty"}))
+            self.write(json_encode({
+                "status": "success",
+                "direct": "/user/" + username,
+                "type": "faculty"
+            }))
             self.finish()
+            return
         docs = self.db.Admin.find({}, {"username": 1})
         docs = [doc["username"] for doc in docs]
         if username in docs:
@@ -128,7 +144,11 @@ class Login(BaseHandler):
                 self.set_secure_cookie("isima_user", username, expires_days=1)
             else:
                 self.set_secure_cookie("isima_user", username)
-            self.write(json_encode({"status": "success", "msg": "you are admin"}))
+            self.write(json_encode({
+                "status": "success",
+                "direct": "/user/" + username,
+                "type": "admin"
+            }))
             self.finish()
             return
         self.write(json_encode({"status": 'error', "msg": "no this user"}))
@@ -144,8 +164,8 @@ class Logout(BaseHandler):
 
 class User(BaseHandler):
     @web.authenticated
-    def get(self):
-        pass
+    def get(self, username):
+        self.render("user.html")
 
 
 def main():
