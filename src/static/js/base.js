@@ -8,4 +8,9 @@ $(document).ready(function(){
     }else{
     $(idname).addClass('active');
     }    
+    if ($.cookie("isima_user")){
+        $("#login").html("<a href='/logout'>Logout</a>");
+    }else{
+        $("#login").html("<a href='/login'>Login</a>");
+    }
 });

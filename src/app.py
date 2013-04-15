@@ -33,6 +33,7 @@ class Application(web.Application):
             (r'/about', About),
             (r'/contact', Contact),
             (r'/login', Login),
+            (r'/logout', Logout),
             (r'/favicon.ico', web.StaticFileHandler, dict(path=settings['static_path'])),
         ]
 
@@ -129,8 +130,16 @@ class Login(BaseHandler):
                 self.set_secure_cookie("isima_user", username)
             self.write(json_encode({"status": "success", "msg": "you are admin"}))
             self.finish()
+            return
         self.write(json_encode({"status": 'error', "msg": "no this user"}))
         self.finish()
+
+
+class Logout(BaseHandler):
+    @web.authenticated
+    def get(self):
+        self.clear_cookie("isima_user")
+        self.redirect("/")
 
 
 class User(BaseHandler):
