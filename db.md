@@ -1,4 +1,5 @@
 Student:
+
   * username: string
   * firstname: string
   * lastname: string
@@ -8,15 +9,19 @@ Student:
   * origin: string like FI or FC
 
 Teacher:
+
   * username
 
 Faculty:
+
   * username
 
 Admin:
+
   * username
 
 Course:
+
   * course_name： string
   * teacher_name: string
   * year: string 
@@ -27,6 +32,7 @@ Course:
   * students: list
 
 Session:
+
   * course_name： string
   * teacher_name: string
   * date： date
@@ -35,6 +41,7 @@ Session:
   * missing_students：list the usernames of all absence students
 
 Justifying:
+
   * username: string 
   * laptime: string the interval of absence time
   * kind_paper: the kind of absence like doctor
