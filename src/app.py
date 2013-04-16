@@ -166,6 +166,26 @@ class User(BaseHandler):
     @web.authenticated
     def get(self, username):
         self.render("user.html")
+    
+    @web.authenticated
+    def post(self, username):
+        request = self.get_argument("request")
+        if request == "courses":
+            date = self.get_argument("date")
+            cursor = self.db.Session.find({"date": date},
+                                          {"course_name": 1,
+                                           "teacher_name": 1,
+                                           "interval_hour": 1
+                                           })
+            docs = list()
+            for doc in cursor:
+                del doc["_id"]
+                docs.append(doc)
+            self.write(json_encode(docs))
+            self.finish()
+
+        if request == "students":
+            pass
 
 
 def main():
