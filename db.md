@@ -1,11 +1,11 @@
 Student:
-  * username
-  * first_name
-  * last_name
-  * year： 学生毕业年份
-  * group(11, 12, 21, 22, 31, 32)
-  * section( F1, F2, F3, F4, F5, F6)
-  * origin FI or FC
+  * username: string
+  * first_name: string
+  * last_name: string
+  * year： string like "2013"
+  * group: string like (11, 12, 21, 22, 31, 32)
+  * section: string like( F1, F2, F3, F4, F5, F6)
+  * origin: string like FI or FC
 
 Teacher:
   * username
@@ -17,22 +17,25 @@ Admin:
   * username
 
 Course:
-  * name：课程名字
-  * sessions_num： 多少节课
-  * teacher：授课老师
-    - year
-    - group
-    - section
-    - origin
+  * course_name： string
+  * teacher_name: string
+  * sessions_num： int   the numbers of this course sessions
+  * date: date
+  * group: string
+  * section: string
+  * origin: string
+  * students: list
 
 Session:
-  * course：课程名字
-  * date_hour：上课时间
-  * filled：是否有学生没有来
-  * missing_students：请假学生的列表
+  * course_name： string
+  * teacher_name: string
+  * date： date
+  * interval_hour: string like "9:00-10:30"
+  * filled：bool if this session is token
+  * missing_students：list the usernames of all absence students
 
 Justifying:
-  * student_name: lastname_firstname
-  * laptime: 请假的区间
-  * kind_paper: 假的类别
+  * username: string 
+  * laptime: string the interval of absence time
+  * kind_paper: the kind of absence like doctor
 
