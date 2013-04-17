@@ -1,7 +1,18 @@
 $(document).ready(function(){
     var date = "";
     //$("#course_select").hide();
-    
+    if ($.cookie("type") == 'student'){
+        $("#myTab li:eq(0)").remove();
+        $("#myTab li:eq(0)").remove();
+    }else if($.cookie("type") == "teacher"){
+        $("#myTab li:eq(1)").remove();
+    }else if($.cookie("type") == 'faculty'){
+        $("#myTab li:eq(1)").remove();
+    }else if($.cookie("type") != "admin"){
+        $("#myTab li:eq(0)").remove();
+        $("#myTab li:eq(0)").remove();
+        $("#myTab li:eq(0)").remove();
+    }
     /*
     $('#myTab a').click(function (e) {
         e.preventDefault();
