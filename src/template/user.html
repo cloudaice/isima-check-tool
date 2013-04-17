@@ -6,6 +6,20 @@ User
 <link href="/static/css/datepicker.css" rel="stylesheet">
 {% end %}
 {% block content %}
+<ul id="myTab" class="nav nav-tabs">
+    <li class=""><a href="#checkpage" data-toggle="tab">Check</a></li>
+    <li class=""><a href="#statepage" data-toggle="tab">State</a></li>
+    <li class=""><a href="#createpage" data-toggle="tab">Create</a>
+    </li>
+</ul>
+<div class='tab-content'>
+<div id="statepage" class='tab-pane'>
+    <p> This is state page</p>
+</div>
+<div id="createpage" class='tab-pane'>
+    <p> This is create page</p>
+</div>
+<div id='checkpage' class="tab-pane">
 <div class="input-append date" id="dp3" data-date-format="yyyy-mm-dd">
 	<input class="span2" size="16" type="text" readonly="">
 	<span class="add-on"><i class="icon-th"></i></span>
@@ -43,6 +57,8 @@ User
 <select class="span3" id="course_select" style="display:none">
 </select>
 <div id='stable'>
+</div>
+</div>
 </div>
 {% end %}
 {% block script %}

@@ -1,6 +1,13 @@
 $(document).ready(function(){
     var date = "";
-    $("#course_select").hide();
+    //$("#course_select").hide();
+    
+    /*
+    $('#myTab a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+    })
+    */
     function show_select(courses){
         $("#course_select").empty();
         $("#course_select").append("<option>select course and teacher</option>");
