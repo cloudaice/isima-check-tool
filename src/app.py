@@ -33,6 +33,7 @@ class Application(web.Application):
             (r"/about", About),
             (r"/contact", Contact),
             (r"/user/([^/]+)", User),
+            (r"/student", Student),
             (r"/login", Login),
             (r"/logout", Logout),
             (r"/favicon.ico", web.StaticFileHandler, dict(path=settings['static_path'])),
@@ -185,8 +186,36 @@ class User(BaseHandler):
             self.finish()
 
         if request == "students":
-            pass
+            course_name = self.get_argument("course_name")
+            teacher_name = self.get_argument("teacher_name")
+            date = self.get_argument("date")
+            year = date.split("-")[0]
+            cursor = self.db.Course.find({"course_name": course_name,
+                                          "teacher_name": teacher_name,
+                                          "year": year
+                                          }, {"students": 1})
+            docs = list()
+            for doc in cursor:
+                del doc["_id"]
+                docs.extend(doc["students"])
+            self.write(json_encode(docs))
+            self.finish()
 
+
+class Student(BaseHandler):
+    @web.authenticated
+    def get(self):
+        student_username = self.get_argument("student_username", None)
+        cursor = self.db.Student.find({"username": student_username})
+        docs = list()
+        for doc in cursor:
+            del doc["_id"]
+            docs = doc
+
+        print docs
+        self.write(json_encode(docs))
+        self.finish()
+            
 
 def main():
     parse_command_line()

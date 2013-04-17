@@ -27,8 +27,9 @@ $(document).ready(function(){
         if (checkText == "select course and teacher"){
             return;
         }
-        var course_name = strip(checkText.split("/")[0]);
-        var teacher_name = strip(checkText.split("/")[1]);
+        checktext_split = checkText.split("/");
+        var teacher_name = strip(checktext_split[checktext_split.length - 1]);
+        var course_name = checkText.substring(0, checkText.length - teacher_name.length - 2);
         var url = "/user/" + $.cookie("username")
         var param = {
             "request": "students",
@@ -42,9 +43,87 @@ $(document).ready(function(){
             data: param,
             dataType: "json",
             success: function(data){
-                console.debug(data); 
+                var student_table = "<hr><table class='table table-striped'>";
+                student_table += "<caption>Students</caption>";
+                student_table += "<thead><tr><th>Name</th><th>Fill</th><th>Reason</th></tr></thead>";
+                student_table += "<tbody>";
+                for(var i = 0; i < data.length; i++){
+                    student_name = data[i];
+                    student_table += "<tr><td><a data-name='/student' href='#' class='label label-success'>" + student_name + "</a></td>";
+                    student_table += "<td><input type='checkbox'/></td>";
+                    student_table += "<td><button type='button' class='btn btn-small btn-primary disabled'>add</button></td></tr>";
+                }
+                student_table += "</tbody></table>"
+                $("#stable").html(student_table);
+                $("*[data-name]").hover( function(){
+                    console.debug("in");
+                    var e=$(this);
+                    console.debug(e.text());
+                    //$(this).unbind('mouseenter mouseleave');
+                    var student_username = e.text();
+                    $.ajax({
+                         type: "GET",
+                         url: "/student",
+                         data: {"student_username": student_username},
+                         dataType: "json",
+                         success: function(data){
+                             var content = ""
+                             for (k in data){
+                             content += " " + k + ":" + data[k];
+                             }
+                             e.popover({
+                                  placement: 'top',
+                                  title: student_username,
+                                  content: content,
+                                  html: true,
+                                  triggrt: "hover",
+                                  delay: 0
+                             }
+                             ).popover("show");
+                         }
+                    });
+                }, function(){
+                    var e = $(this);
+                    e.popover("hide");
+                });
+                $("*[data-poload]").bind("click", function(){
+                    return false;
+                });
+                /*
+                for (var i = 0; i< data.length; i++){
+                    var name_id = "#name" + i;
+                    console.debug(name_id);
+                    $(name_id).popover({
+                         placement: 'top',
+                         title: function(){
+                            return $(this).text();
+                         },
+                         content: function(){
+                             var student_username = $(this).text();
+                             var content_data = $.ajax({
+                                 type: "POST",
+                                 url: "/student",
+                                 data: {"student_username": student_username},
+                                 dataType: "json",
+                                 success: function(data){
+                                     var content = ""
+                                     for (k in data){
+                                     content += " " + k + ":" + data[k];
+                                     }
+                                     return content;
+                                 }
+                             });
+                             console.debug(content_data['success']);
+                         },
+                         html: true,
+                         trigger: 'hover',
+                         delay: 2000
+                    });
+                }
+                */
             }
         });
+        
         console.debug(checkText);
         console.debug(course_name);
         console.debug(teacher_name);
