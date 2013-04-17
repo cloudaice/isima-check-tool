@@ -29,7 +29,7 @@ $(document).ready(function(){
         }
         checktext_split = checkText.split("/");
         var teacher_name = strip(checktext_split[checktext_split.length - 1]);
-        var course_name = checkText.substring(0, checkText.length - teacher_name.length - 2);
+        var course_name = strip(checkText.substring(0, checkText.length - teacher_name.length - 2));
         var url = "/user/" + $.cookie("username")
         var param = {
             "request": "students",
@@ -51,7 +51,7 @@ $(document).ready(function(){
                     student_name = data[i];
                     student_table += "<tr><td><a data-name='/student' href='#' class='label label-success'>" + student_name + "</a></td>";
                     student_table += "<td><input data-checkbox='checkbox' type='checkbox'/></td>";
-                    student_table += "<td><button disabled='true' type='button' data-toggle='modal' data-target='#myModal' class='btn btn-small btn-primary disabled'>add</button></td></tr>";
+                    student_table += "<td><button data-edit='button' disabled='true' type='button' class='btn btn-small btn-primary disabled'>edit</button></td></tr>";
                 }
                 student_table += "</tbody></table>"
                 $("#stable").html(student_table);
@@ -73,7 +73,7 @@ $(document).ready(function(){
                              }
                              e.popover({
                                   placement: 'top',
-                                  title: student_username,
+                                  //title: student_username,
                                   content: content,
                                   html: true,
                                   triggrt: "hover",
@@ -86,7 +86,7 @@ $(document).ready(function(){
                     var e = $(this);
                     e.popover("hide");
                 });
-                $("*[data-poload]").bind("click", function(){
+                $("*[data-name]").click(function(){
                     return false;
                 });
 
@@ -102,6 +102,51 @@ $(document).ready(function(){
                         $(this).parent().next("td").children().attr("disabled", 'true');
                         console.debug("uncheck");
                     }
+                });
+
+                $("*[data-edit]").click(function(){
+                    $('#myModal').modal({
+                        backdrop: true,
+                        keyboard: true,
+                        show: true
+                    });
+                    e = $(this);
+                    $("#reasonsubmit").click(function(){
+                        var date = $("#dp3 input").val();
+                        var checkText=$("#course_select").find("option:selected").text();
+                        checktext_split = checkText.split("/");
+                        var teacher_name = strip(checktext_split[checktext_split.length - 1]);
+                        var course_name = strip(checkText.substring(0, checkText.length - teacher_name.length - 2));
+                        var student_username = e.parent().prev("td").prev("td").children().text();
+                        var kind = $("#inputKind").val();
+                        console.debug(kind);
+                        var laptime = $("#inputLaptime").val();
+                        var reason = $("#inputReason").val();
+                        var param = {
+                            "student_username": student_username,
+                            "kind": kind,
+                            "laptime": laptime,
+                            "reason": reason,
+                            "course_name": course_name,
+                            "teacher_name": teacher_name,
+                            "date": date
+                        }
+                        $.ajax({
+                            type: 'POST',
+                            url: '/reason',
+                            data: param,
+                            dataType: "json",
+                            success: function(data){
+                                if (data.status == "success"){
+                                    $('#myModal').modal('hide');
+                                }else{
+                                    alert(data.msg);
+                                    jAlert('This is a custom alert box', 'Error Info');
+                                }
+                            }
+                        });
+                        return false;
+                    });
                 });
             }
         });

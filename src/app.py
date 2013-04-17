@@ -34,6 +34,7 @@ class Application(web.Application):
             (r"/contact", Contact),
             (r"/user/([^/]+)", User),
             (r"/student", Student),
+            (r"/reason", Reason),
             (r"/login", Login),
             (r"/logout", Logout),
             (r"/favicon.ico", web.StaticFileHandler, dict(path=settings['static_path'])),
@@ -216,6 +217,36 @@ class Student(BaseHandler):
         self.write(json_encode(docs))
         self.finish()
             
+
+class Reason(BaseHandler):
+    @web.authenticated
+    def post(self):
+        print 'hello'
+        course_name = self.get_argument("course_name")
+        teacher_name = self.get_argument("teacher_name")
+        date = self.get_argument("date")
+        kind = self.get_argument("kind")
+        laptime = self.get_argument("laptime")
+        reason = self.get_argument("reason")
+        student_username = self.get_argument("student_username")
+        condition = {
+            "date": date,
+            "course_name": course_name,
+            "teacher_name": teacher_name,
+        }
+        docs = {
+            "date": date,
+            "course_name": course_name,
+            "teacher_name": teacher_name,
+            "student_username": student_username,
+            "kind": kind,
+            "laptime": laptime,
+            "reason": reason
+        }
+        self.db.Justifying.update(condition, docs, upsert=True)
+        self.write(json_encode({"status": "success"}))
+        self.finish()
+    
 
 def main():
     parse_command_line()
