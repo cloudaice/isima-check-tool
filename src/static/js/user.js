@@ -50,8 +50,8 @@ $(document).ready(function(){
                 for(var i = 0; i < data.length; i++){
                     student_name = data[i];
                     student_table += "<tr><td><a data-name='/student' href='#' class='label label-success'>" + student_name + "</a></td>";
-                    student_table += "<td><input type='checkbox'/></td>";
-                    student_table += "<td><button type='button' class='btn btn-small btn-primary disabled'>add</button></td></tr>";
+                    student_table += "<td><input data-checkbox='checkbox' type='checkbox'/></td>";
+                    student_table += "<td><button disabled='true' type='button' data-toggle='modal' data-target='#myModal' class='btn btn-small btn-primary disabled'>add</button></td></tr>";
                 }
                 student_table += "</tbody></table>"
                 $("#stable").html(student_table);
@@ -89,44 +89,22 @@ $(document).ready(function(){
                 $("*[data-poload]").bind("click", function(){
                     return false;
                 });
-                /*
-                for (var i = 0; i< data.length; i++){
-                    var name_id = "#name" + i;
-                    console.debug(name_id);
-                    $(name_id).popover({
-                         placement: 'top',
-                         title: function(){
-                            return $(this).text();
-                         },
-                         content: function(){
-                             var student_username = $(this).text();
-                             var content_data = $.ajax({
-                                 type: "POST",
-                                 url: "/student",
-                                 data: {"student_username": student_username},
-                                 dataType: "json",
-                                 success: function(data){
-                                     var content = ""
-                                     for (k in data){
-                                     content += " " + k + ":" + data[k];
-                                     }
-                                     return content;
-                                 }
-                             });
-                             console.debug(content_data['success']);
-                         },
-                         html: true,
-                         trigger: 'hover',
-                         delay: 2000
-                    });
-                }
-                */
+
+                $("*[data-checkbox]").mousedown(function() {
+                    if (!$(this).is(':checked')) {
+                        //this.checked = confirm("Are you sure?");
+                        //$(this).trigger("change");
+                        console.debug("check");
+                        $(this).parent().next("td").children().removeClass("disabled");
+                        $(this).parent().next("td").children().removeAttr("disabled");
+                    }else{
+                        $(this).parent().next("td").children().addClass("disabled");
+                        $(this).parent().next("td").children().attr("disabled", 'true');
+                        console.debug("uncheck");
+                    }
+                });
             }
         });
-        
-        console.debug(checkText);
-        console.debug(course_name);
-        console.debug(teacher_name);
     });
     
     function formatdate(year, month, day){
