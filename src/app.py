@@ -113,7 +113,7 @@ class Login(BaseHandler):
         if username in docs:
             self.auth_password(password)
             if not rememberme:
-                self.set_secure_coolie("isima_user", username, expires_days=1)
+                self.set_secure_cookie("isima_user", username, expires_days=1)
             else:
                 self.set_secure_cookie("isima_user", username)
             self.write(json_encode({
