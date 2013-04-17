@@ -67,10 +67,15 @@ $(document).ready(function(){
                          data: {"student_username": student_username},
                          dataType: "json",
                          success: function(data){
-                             var content = ""
-                             for (k in data){
-                             content += " " + k + ":" + data[k];
-                             }
+                             var info = "<span class='badge badge-info'>";
+                             var content = "<p><i class='icon-user'></i>";
+                             content += " " + data['lastname'] + "&nbsp;&nbsp;" + data['firstname'] + "</p>";
+                             content += "<p>" + info + "Year: " + data['year'] + "</span>";
+                             content += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                             content += info + "Group: " + data['group'] + "</span></p>";
+                             content += "<p>" + info + "Section: " + data['section'] + "</span>";
+                             content += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                             content += info + "Origin: " + data['origin'] + "</span></p>";
                              e.popover({
                                   placement: 'top',
                                   //title: student_username,
