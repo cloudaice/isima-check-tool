@@ -16,7 +16,6 @@
   <link href="/static/css/bootstrap.css" rel="stylesheet">
   <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
   <style type="text/css">
-
       /* Sticky footer styles
       -------------------------------------------------- */
 
@@ -53,24 +52,7 @@
           padding-right: 20px;
         }
       }
-
-      /* Custom page CSS
-      -------------------------------------------------- */
-      /* Not required for template or sticky footer method. */
-
-      #wrap > .container {
-        padding-top: 60px;
-      }
-      .container .credit {
-        margin: 20px 0;
-      }
-
-      code {
-        font-size: 80%;
-      }
-
     </style>
-
   <style type="text/css">
       body {
         padding-top: 20px;
@@ -80,7 +62,7 @@
       /* Custom container */
       .container-narrow {
         margin: 0 auto;
-        max-width: 700px;
+        max-width: 800px;
       }
       .container-narrow > hr {
         margin: 30px 0;
@@ -108,28 +90,27 @@
         margin-top: 28px;
       }
     </style>
-
-  
-
 <body>
   <div id = "wrap">
     <div class="container-narrow">
       <div class="masthead">
         <ul class="nav nav-pills pull-right">
-          <li id='home'>
+            <li id='home'>
             <a href="/">Home</a>
-          </li>
-          <li id='about'>
+            </li>
+            <li id='about'>
             <a href="/about">About</a>
-          </li>
-          <li id='login'>
+            </li>
+            <li id='login'>
             <a></a>
-          </li>
+            </li>
         </ul>
         <h3 class="muted">Isima check tool</h3>
       </div>
-      {% block content %}{% end %}</div>
-  </div>
+        {% block content %}{% end %}
+    </div>
+  <div id='push'></div>
+</div>
   <div id="footer">
     <div class="container">
       <p class="muted credit">
@@ -139,8 +120,6 @@
       </p>
     </div>
   </div>
-
-  <!-- /container -->
   <script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
   <script type="text/javascript" src="/static/js/bootstrap.js"></script>
   <script type="text/javascript" src="/static/js/base.js"></script>
