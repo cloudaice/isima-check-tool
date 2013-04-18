@@ -45,7 +45,7 @@ Justifying:
   * date: string session date
   * course_name: string
   * teacher_name: string
-  * username: string 
+  * student_username: string 
   * kind_paper: the kind of absence like doctor
   * laptime: string the interval of absence time
   * reasom: the data of reason
