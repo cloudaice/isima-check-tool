@@ -7,14 +7,19 @@ User
 {% end %}
 {% block content %}
 <ul id="myTab" class="nav nav-tabs">
-    <li class=""><a href="#checkpage" data-toggle="tab">Check</a></li>
-    <li class=""><a href="#createpage" data-toggle="tab">Create</a>
-    <li class=""><a href="#statepage" data-toggle="tab">State</a></li>
+    <li class=""><a href="#checkpage">Check</a></li>
+    <li class=""><a href="#createpage">Create</a>
+    <li class=""><a href="#statepage">State</a></li>
     </li>
 </ul>
 <div class='tab-content'>
 <div id="statepage" class='tab-pane'>
-    <p> This is state page</p>
+    <div id="absence_table">
+    </div>
+    <ul id='paper' class="pager">
+        <li><a href="#">Previous</a></li>
+        <li><a href="#">Next</a></li>
+    </ul>
 </div>
 <div id="createpage" class='tab-pane'>
     <p> This is create page</p>

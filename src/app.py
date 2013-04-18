@@ -220,8 +220,25 @@ class Student(BaseHandler):
 
 class Reason(BaseHandler):
     @web.authenticated
+    def get(self):
+        next_page = self.get_argument("next_page")
+        next_page = int(next_page)
+        all_reasons = self.db.Justifying.find().count()
+        if all_reasons < next_page:
+            self.write(json_encode({"status": "full"}))
+            self.finish()
+            return
+        cursor = self.db.Justifying.find({}, sort=[{"date", -1}]).skip(next_page).limit(10)
+        docs = list()
+        for doc in cursor:
+            print doc
+            del doc["_id"]
+            del doc["teacher_name"]
+            docs.append(doc)
+        self.write(json_encode({"status": "ok", "data": docs}))
+        self.finish()
+
     def post(self):
-        print 'hello'
         course_name = self.get_argument("course_name")
         teacher_name = self.get_argument("teacher_name")
         date = self.get_argument("date")

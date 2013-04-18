@@ -1,5 +1,6 @@
 $(document).ready(function(){
     var date = "";
+    var next_page = 0;
     //$("#course_select").hide();
     if ($.cookie("type") == 'student'){
         $("#myTab li:eq(0)").remove();
@@ -13,12 +14,58 @@ $(document).ready(function(){
         $("#myTab li:eq(0)").remove();
         $("#myTab li:eq(0)").remove();
     }
-    /*
+    function load_absences(next_page){
+        $.ajax({
+            type: 'GET',
+            url: "/reason",
+            data: {"next_page": next_page},
+            dataType: "json",
+            success: function(data){
+                if (data['status'] == "full"){
+                    return
+                }
+                data = data['data'];
+                var absence_table = "<hr><table class='table table-striped'>";
+                absence_table += "<caption>Absences</caption>";
+                absence_table += "<thead><tr><th>Date</th><th>Student Name</th><th>Course Name</th><th>kind_paper</th><th>laptime</th><th>reason</th></tr></thead>";
+                absence_table += "<tbody>";
+                for (var i = 0; i< data.length; i++){
+                    absence_table += "<tr>"
+                    absence_table += "<td>" + data[i]['date'] + "</td>";
+                    absence_table += "<td>" + data[i]['student_username'] + "</td>";
+                    absence_table += "<td>" + data[i]['course_name'] + "</td>";
+                    absence_table += "<td>" + data[i]['kind'] + "</td>";
+                    absence_table += "<td>" + data[i]['laptime'] + "</td>";
+                    absence_table += "<td>" + data[i]['reason'] + "</td>";
+                    absence_table += "</tr>";
+                }
+                absence_table += "</tbody></table>";
+                $("#absence_table").html(absence_table);
+            }
+        });
+    }
     $('#myTab a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
+        if ($(this).text() == "State"){
+            load_absences(0);
+            next_page = 10;
+        }
     })
-    */
+    $("#paper a").click(function(e){
+        e.preventDefault();
+        var node_text = $(this).text();
+        if (node_text == "Previous"){
+            if (next_page > 10){
+                next_page -= 20;
+                load_absences(next_page);
+                next_page += 10;
+            }
+        }else{
+            load_absences(next_page);
+            next_page += 10;
+        }
+    });
     function show_select(courses){
         $("#course_select").empty();
         $("#course_select").append("<option>select course and teacher</option>");
@@ -184,6 +231,12 @@ $(document).ready(function(){
         }
         return year + '-' + month + '-' + day;
     }
+    $("#dp3").popover({
+        placement: 'bottom',
+        trigger: "hover",
+        content: "Please select date",
+        delay: 0
+    });
 
     $('#dp3').datepicker({format: 'yyyy-mm-dd', weekStart: 1}).on('changeDate', function(ev){
         date = formatdate(ev.date.getFullYear(), ev.date.getMonth() + 1, ev.date.getDate());
