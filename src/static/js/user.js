@@ -14,6 +14,29 @@ $(document).ready(function(){
         $("#myTab li:eq(0)").remove();
         $("#myTab li:eq(0)").remove();
     }
+    function array2json(arr) {
+        var parts = [];
+        var is_list = (Object.prototype.toString.apply(arr) === '[object Array]');
+
+        for(var key in arr) {
+            var value = arr[key];
+            if(typeof value == "object") { //Custom handling for arrays
+                if(is_list) parts.push(array2json(value)); /* :RECURSION: */
+                else parts[key] = array2json(value); /* :RECURSION: */
+            } else {
+                var str = "";
+                if(!is_list) str = '"' + key + '":';
+                if(typeof value == "number") str += value; //Numbers
+                else if(value === false) str += 'false'; //The booleans
+                else if(value === true) str += 'true';
+                else str += '"' + value + '"'; //All other things
+                parts.push(str);
+            }
+        }
+        var json = parts.join(",");
+        if(is_list) return '[' + json + ']';//Return numerical JSON
+        return '{' + json + '}';//Return associative JSON
+    }
     function load_absences(next_page){
         $.ajax({
             type: 'GET',
@@ -122,12 +145,38 @@ $(document).ready(function(){
                 student_table += "<div class='well'><button id='checksubmit'class='btn btn-large btn-block btn-primary' type='button'>Submit</button></div>";
                 $("#stable").html(student_table);
                 $("#checksubmit").click(function(){
+                    var checked_data = new Array();
                     $("*[data-checkbox]").each(function(){
-                        var checked_data = Array();
-                        if($(this).is(':checked')){
-                            console.debug("checked");
-                        }else{
-                            console.debug("not checked");
+                        var e = $(this);
+                        if(e.is(':checked')){
+                            var date = $("#dp3 input").val();
+                            var checkText=$("#course_select").find("option:selected").text();
+                            var checktext_split = checkText.split("/");
+                            var teacher_name = strip(checktext_split[checktext_split.length - 1]);
+                            var course_name = strip(checkText.substring(0, checkText.length - teacher_name.length - 2));
+                            var student_username = e.parent().prev("td").children().text();
+                            checked_data.push({
+                                "date": date,
+                                "teacher": teacher_name,
+                                "course": course_name,
+                                "student": student_username
+                            });
+                        }
+                    });
+                    console.debug(array2json(checked_data));
+                    $.ajax({
+                        type: "POST",
+                        url: "/session_absence",
+                        data: {"absences": array2json(checked_data)},
+                        dataType: "json",
+                        success: function(data){
+                            if (data["status"] == "success"){
+                                $('#checkModalLabel').html('successed submit');
+                                $('#checkModal').modal('show'); 
+                            }else{
+                                $('#checkModalLabel').html('some error with submit');
+                                $('#checkModal').modal('show'); 
+                            }
                         }
                     });
                 });

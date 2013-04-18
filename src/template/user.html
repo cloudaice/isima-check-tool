@@ -6,6 +6,15 @@ User
 <link href="/static/css/datepicker.css" rel="stylesheet">
 {% end %}
 {% block content %}
+<div id="checkModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="checkModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">× </button>
+        <h3 id="checkModalLabel"></h3>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+</div>
 <ul id="myTab" class="nav nav-tabs">
     <li class=""><a href="#checkpage">Check</a></li>
     <li class=""><a href="#createpage">Create</a>

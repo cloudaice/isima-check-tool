@@ -1,6 +1,7 @@
 #-*-coding: utf-8-*-
 # @author: xiangchao<cloudaice@gmail.com>
 
+import json
 import os
 from lib import Mongo
 #from tornado import gen
@@ -35,6 +36,7 @@ class Application(web.Application):
             (r"/user/([^/]+)", User),
             (r"/student", Student),
             (r"/reason", Reason),
+            (r"/session_absence", Session_absence),
             (r"/login", Login),
             (r"/logout", Logout),
             (r"/favicon.ico", web.StaticFileHandler, dict(path=settings['static_path'])),
@@ -264,6 +266,40 @@ class Reason(BaseHandler):
         self.write(json_encode({"status": "success"}))
         self.finish()
     
+
+class Session_absence(BaseHandler):
+    @web.authenticated
+    def post(self):
+        absences = self.get_argument("absences", None)
+        if not absences:
+            print "no absence"
+            self.write(json_encode({"status": "failed"}))
+            self.finish()
+            return
+        absences = json.loads(absences)
+        print type(absences)
+        for check in absences:
+            date = check["date"]
+            teacher_name = check["teacher"]
+            course_name = check["course"]
+            student_username = check["student"]
+            doc = self.db.Session.find_one({"teacher_name": teacher_name,
+                                            "date": date,
+                                            "course_name": course_name})
+            if not doc:
+                print 'no doc'
+                self.write(json_encode({"status": "failed"}))
+                self.finish()
+                return
+            if student_username not in doc["missing_students"]:
+                doc["missing_students"].append(student_username)
+            doc["filled"] = True
+            self.db.Session.update({"teacher_name": teacher_name,
+                                    "date": date,
+                                    "course_name": course_name}, doc)
+        self.write(json_encode({"status": "success"}))
+        self.finish()
+
 
 def main():
     parse_command_line()
