@@ -119,8 +119,18 @@ $(document).ready(function(){
                     student_table += "<td><button data-edit='button' disabled='true' type='button' class='btn btn-small btn-primary disabled'>edit</button></td></tr>";
                 }
                 student_table += "</tbody></table>"
-                student_table += "<div class='well'><button class='btn btn-large btn-block btn-primary' type='button'>Submit</button></div>";
+                student_table += "<div class='well'><button id='checksubmit'class='btn btn-large btn-block btn-primary' type='button'>Submit</button></div>";
                 $("#stable").html(student_table);
+                $("#checksubmit").click(function(){
+                    $("*[data-checkbox]").each(function(){
+                        var checked_data = Array();
+                        if($(this).is(':checked')){
+                            console.debug("checked");
+                        }else{
+                            console.debug("not checked");
+                        }
+                    });
+                });
                 $("*[data-name]").hover( function(){
                     console.debug("in");
                     var e=$(this);
