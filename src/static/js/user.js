@@ -119,6 +119,7 @@ $(document).ready(function(){
                     student_table += "<td><button data-edit='button' disabled='true' type='button' class='btn btn-small btn-primary disabled'>edit</button></td></tr>";
                 }
                 student_table += "</tbody></table>"
+                student_table += "<div class='well'><button class='btn btn-large btn-block btn-primary' type='button'>Submit</button></div>";
                 $("#stable").html(student_table);
                 $("*[data-name]").hover( function(){
                     console.debug("in");
