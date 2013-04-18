@@ -211,8 +211,8 @@ $(document).ready(function(){
                                 if (data.status == "success"){
                                     $('#myModal').modal('hide');
                                 }else{
-                                    alert(data.msg);
-                                    jAlert('This is a custom alert box', 'Error Info');
+                                    //alert(data.msg);
+                                    jAlert('Alert box', data.msg);
                                 }
                             }
                         });
