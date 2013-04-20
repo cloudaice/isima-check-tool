@@ -1,7 +1,6 @@
 $(document).ready(function(){
     var date = "";
     var next_page = 0;
-    //$("#course_select").hide();
     if ($.cookie("type") == 'student'){
         $("#myTab li:eq(0)").remove();
         $("#myTab li:eq(0)").remove();
