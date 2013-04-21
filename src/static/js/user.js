@@ -1,6 +1,8 @@
 $(document).ready(function(){
     var date = "";
     var next_page = 0;
+    
+    //judge that which type of user
     if ($.cookie("type") == 'student'){
         $("#myTab li:eq(0)").remove();
         $("#myTab li:eq(0)").remove();
@@ -13,6 +15,7 @@ $(document).ready(function(){
         $("#myTab li:eq(0)").remove();
         $("#myTab li:eq(0)").remove();
     }
+
     function array2json(arr) {
         var parts = [];
         var is_list = (Object.prototype.toString.apply(arr) === '[object Array]');
@@ -36,6 +39,7 @@ $(document).ready(function(){
         if(is_list) return '[' + json + ']';//Return numerical JSON
         return '{' + json + '}';//Return associative JSON
     }
+
     function load_absences(next_page){
         $.ajax({
             type: 'GET',
@@ -66,6 +70,7 @@ $(document).ready(function(){
             }
         });
     }
+
     $('#myTab a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
@@ -74,6 +79,7 @@ $(document).ready(function(){
             next_page = 10;
         }
     })
+
     $("#paper a").click(function(e){
         e.preventDefault();
         var node_text = $(this).text();
@@ -88,6 +94,7 @@ $(document).ready(function(){
             next_page += 10;
         }
     });
+
     function show_select(courses){
         $("#course_select").empty();
         $("#course_select").append("<option>select course and teacher</option>");
@@ -100,13 +107,13 @@ $(document).ready(function(){
     }
 
     function strip(str){
-       if (str[0] == ' '){
-           return strip(str.substring(1));
-       }else if (str[str.length - 1] == ' '){
-           return strip(str.substring(0, str.length - 1));
-       }else{
-           return str
-       }
+        if (str[0] == ' '){
+            return strip(str.substring(1));
+        }else if (str[str.length - 1] == ' '){
+            return strip(str.substring(0, str.length - 1));
+        }else{
+            return str
+        }
     }
 
     $("#course_select").change(function(){
@@ -186,30 +193,30 @@ $(document).ready(function(){
                     //$(this).unbind('mouseenter mouseleave');
                     var student_username = e.text();
                     $.ajax({
-                         type: "GET",
-                         url: "/student",
-                         data: {"student_username": student_username},
-                         dataType: "json",
-                         success: function(data){
-                             var info = "<span class='badge badge-info'>";
-                             var content = "<p><i class='icon-user'></i>";
-                             content += " " + data['lastname'] + "&nbsp;&nbsp;" + data['firstname'] + "</p>";
-                             content += "<p>" + info + "Year: " + data['year'] + "</span>";
-                             content += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                             content += info + "Group: " + data['group'] + "</span></p>";
-                             content += "<p>" + info + "Section: " + data['section'] + "</span>";
-                             content += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                             content += info + "Origin: " + data['origin'] + "</span></p>";
-                             e.popover({
-                                  placement: 'top',
-                                  //title: student_username,
-                                  content: content,
-                                  html: true,
-                                  triggrt: "hover",
-                                  delay: 0
-                             }
-                             ).popover("show");
-                         }
+                        type: "GET",
+                        url: "/student",
+                        data: {"student_username": student_username},
+                        dataType: "json",
+                        success: function(data){
+                            var info = "<span class='badge badge-info'>";
+                            var content = "<p><i class='icon-user'></i>";
+                            content += " " + data['lastname'] + "&nbsp;&nbsp;" + data['firstname'] + "</p>";
+                            content += "<p>" + info + "Year: " + data['year'] + "</span>";
+                            content += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                            content += info + "Group: " + data['group'] + "</span></p>";
+                            content += "<p>" + info + "Section: " + data['section'] + "</span>";
+                            content += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                            content += info + "Origin: " + data['origin'] + "</span></p>";
+                            e.popover({
+                                placement: 'top',
+                                //title: student_username,
+                                content: content,
+                                html: true,
+                                triggrt: "hover",
+                                delay: 0
+                            }
+                                     ).popover("show");
+                        }
                     });
                 }, function(){
                     var e = $(this);
@@ -280,7 +287,7 @@ $(document).ready(function(){
             }
         });
     });
-    
+
     function formatdate(year, month, day){
         if (month.toString().length == 1){
             month = '0' + month;
@@ -290,6 +297,7 @@ $(document).ready(function(){
         }
         return year + '-' + month + '-' + day;
     }
+
     $("#dp3").popover({
         placement: 'bottom',
         trigger: "hover",
