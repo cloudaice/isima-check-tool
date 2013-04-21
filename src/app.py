@@ -215,23 +215,26 @@ class Student(BaseHandler):
 
 class Reason(BaseHandler):
     @web.authenticated
+    @web.asynchronous
+    @gen.coroutine
     def get(self):
         next_page = self.get_argument("next_page")
         next_page = int(next_page)
+        resp = yield gen.Task(self.get_reasons, next_page)
+        self.write(json_encode(resp))
+        self.finish()
+
+    def get_reasons(self, next_page, callback=None):
         all_reasons = self.db.Justifying.find().count()
         if all_reasons < next_page:
-            self.write(json_encode({"status": "full"}))
-            self.finish()
-            return
+            callback({"status": "full"})
         cursor = self.db.Justifying.find({}, sort=[{"date", -1}]).skip(next_page).limit(10)
         docs = list()
         for doc in cursor:
-            print doc
             del doc["_id"]
             del doc["teacher_name"]
             docs.append(doc)
-        self.write(json_encode({"status": "ok", "data": docs}))
-        self.finish()
+        callback({"status": "ok", "data": docs})
 
     def post(self):
         course_name = self.get_argument("course_name")
