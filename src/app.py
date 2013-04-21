@@ -196,17 +196,21 @@ class User(BaseHandler):
 
 class Student(BaseHandler):
     @web.authenticated
+    @web.asynchronous
+    @gen.coroutine
     def get(self):
         student_username = self.get_argument("student_username", None)
+        resp = yield gen.Task(self.get_students, student_username)
+        self.write(json_encode(resp))
+        self.finish()
+        
+    def get_students(self, student_username, callback=None):
         cursor = self.db.Student.find({"username": student_username})
         docs = list()
         for doc in cursor:
             del doc["_id"]
             docs = doc
-
-        print docs
-        self.write(json_encode(docs))
-        self.finish()
+        callback(docs)
             
 
 class Reason(BaseHandler):
