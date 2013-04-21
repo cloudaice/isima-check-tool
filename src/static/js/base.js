@@ -6,7 +6,7 @@ $(document).ready(function(){
     if (classname == '/'){
         $('#home').addClass('active');
     }else{
-    $(idname).addClass('active');
+        $(idname).addClass('active');
     }    
     if ($.cookie("isima_user")){
         var username = $.cookie("username")

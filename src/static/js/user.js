@@ -1,7 +1,7 @@
 $(document).ready(function(){
     var date = "";
     var next_page = 0;
-    
+
     //judge that which type of user
     if ($.cookie("type") == 'student'){
         $("#myTab li:eq(0)").remove();
@@ -39,7 +39,7 @@ $(document).ready(function(){
         if(is_list) return '[' + json + ']';//Return numerical JSON
         return '{' + json + '}';//Return associative JSON
     }
-    
+
     //load next absence page
     function load_absences(next_page){
         $.ajax({
