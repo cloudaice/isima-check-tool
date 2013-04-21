@@ -154,37 +154,44 @@ class User(BaseHandler):
         self.render("user.html")
     
     @web.authenticated
+    @web.asynchronous
+    @gen.coroutine
     def post(self, username):
         request = self.get_argument("request")
+        date = self.get_argument("date")
+        resp = None
         if request == "courses":
-            date = self.get_argument("date")
-            cursor = self.db.Session.find({"date": date},
-                                          {"course_name": 1,
-                                           "teacher_name": 1,
-                                           "interval_hour": 1
-                                           })
-            docs = list()
-            for doc in cursor:
-                del doc["_id"]
-                docs.append(doc)
-            self.write(json_encode(docs))
-            self.finish()
-
-        if request == "students":
+            resp = yield gen.Task(self.get_courses, date)
+        elif request == "students":
             course_name = self.get_argument("course_name")
             teacher_name = self.get_argument("teacher_name")
-            date = self.get_argument("date")
-            year = date.split("-")[0]
-            cursor = self.db.Course.find({"course_name": course_name,
-                                          "teacher_name": teacher_name,
-                                          "year": year
-                                          }, {"students": 1})
-            docs = list()
-            for doc in cursor:
-                del doc["_id"]
-                docs.extend(doc["students"])
-            self.write(json_encode(docs))
-            self.finish()
+            resp = yield gen.Task(self.get_students, date, course_name, teacher_name)
+        self.write(json_encode(resp))
+        self.finish()
+
+    def get_courses(self, date, callback=None):
+        cursor = self.db.Session.find({"date": date},
+                                      {"course_name": 1,
+                                       "teacher_name": 1,
+                                       "interval_hour": 1
+                                       })
+        docs = list()
+        for doc in cursor:
+            del doc["_id"]
+            docs.append(doc)
+        callback(docs)
+
+    def get_students(self, date, course_name, teacher_name, callback=None):
+        year = date.split("-")[0]
+        cursor = self.db.Course.find({"course_name": course_name,
+                                      "teacher_name": teacher_name,
+                                      "year": year
+                                      }, {"students": 1})
+        docs = list()
+        for doc in cursor:
+            del doc["_id"]
+            docs.extend(doc["students"])
+        callback(docs)
 
 
 class Student(BaseHandler):
