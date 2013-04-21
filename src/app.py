@@ -79,7 +79,7 @@ class Login(BaseHandler):
     def get(self):
         if not self.get_cookie("checking"):
             self.set_cookie('checking', 'true')
-        self.render('login2.html')
+        self.render('login.html')
 
     def auth_password(self, password):
         """
