@@ -236,14 +236,17 @@ class Reason(BaseHandler):
             docs.append(doc)
         callback({"status": "ok", "data": docs})
 
+    @web.authenticated
+    @web.asynchronous
+    @gen.coroutine
     def post(self):
-        course_name = self.get_argument("course_name")
-        teacher_name = self.get_argument("teacher_name")
-        date = self.get_argument("date")
-        kind = self.get_argument("kind")
-        laptime = self.get_argument("laptime")
-        reason = self.get_argument("reason")
-        student_username = self.get_argument("student_username")
+        course_name = self.get_argument("course_name", None)
+        teacher_name = self.get_argument("teacher_name", None)
+        date = self.get_argument("date", None)
+        kind = self.get_argument("kind", None)
+        laptime = self.get_argument("laptime", None)
+        reason = self.get_argument("reason", None)
+        student_username = self.get_argument("student_username", None)
         condition = {
             "date": date,
             "course_name": course_name,
