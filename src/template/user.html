@@ -22,57 +22,57 @@ User
     </li>
 </ul>
 <div class='tab-content'>
-<div id="statepage" class='tab-pane'>
-    <div id="absence_table">
+    <div id="statepage" class='tab-pane'>
+        <div id="absence_table">
+        </div>
+        <ul id='paper' class="pager">
+            <li><a href="#">Previous</a></li>
+            <li><a href="#">Next</a></li>
+        </ul>
     </div>
-    <ul id='paper' class="pager">
-        <li><a href="#">Previous</a></li>
-        <li><a href="#">Next</a></li>
-    </ul>
-</div>
-<div id="createpage" class='tab-pane'>
-    <p> This is create page</p>
-</div>
-<div id='checkpage' class="tab-pane">
-<div class="input-append date" id="dp3" data-date-format="yyyy-mm-dd">
-	<input class="span2" size="16" type="text" readonly="">
-	<span class="add-on"><i class="icon-th"></i></span>
-</div>
-<div id="myModal" class="modal hide fade" style="display: none;">
+    <div id="createpage" class='tab-pane'>
+        <p> This is create page</p>
+    </div>
+    <div id='checkpage' class="tab-pane">
+        <div class="input-append date" id="dp3" data-date-format="yyyy-mm-dd">
+            <input class="span2" size="16" type="text" readonly="">
+            <span class="add-on"><i class="icon-th"></i></span>
+        </div>
+        <div id="myModal" class="modal hide fade" style="display: none;">
             <div class="modal-header">
-              <a class="close" data-dismiss="modal">×</a>
-              <h3>Justfying</h3>
+                <a class="close" data-dismiss="modal">×</a>
+                <h3>Justfying</h3>
             </div>
             <div class="modal-body">
-              <div class="control-group">
-                  <label class="control-label" for="inputKind">Kind of paper</label>
-                  <div class="controls">
-                      <input type="text" id="inputKind" placeholder="kind of paper">
-                  </div>
-              </div>
-              <div class="control-group">
-                  <label class="control-label" for="inputLaptime">Laptime</label>
-                  <div class="controls">
-                      <input type="text" id="inputLaptime" placeholder="Laptime">
-                  </div>
-              </div>
-              <div class="control-group">
-                  <label class="control-label" for="inputReason">Reason</label>
-                  <div class="controls">
-                      <textarea id="inputReason"></textarea>
-                  </div>
-              </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputKind">Kind of paper</label>
+                    <div class="controls">
+                        <input type="text" id="inputKind" placeholder="kind of paper">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputLaptime">Laptime</label>
+                    <div class="controls">
+                        <input type="text" id="inputLaptime" placeholder="Laptime">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputReason">Reason</label>
+                    <div class="controls">
+                        <textarea id="inputReason"></textarea>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-              <a href="#" class="btn" data-dismiss="modal">Close</a>
-              <a href="#" id='reasonsubmit' class="btn btn-primary">Save</a>
+                <a href="#" class="btn" data-dismiss="modal">Close</a>
+                <a href="#" id='reasonsubmit' class="btn btn-primary">Save</a>
             </div>
-          </div>
-<select class="span3" id="course_select" style="display:none">
-</select>
-<div id='stable'>
-</div>
-</div>
+        </div>
+        <select class="span3" id="course_select" style="display:none">
+        </select>
+        <div id='stable'>
+        </div>
+    </div>
 </div>
 {% end %}
 {% block script %}
