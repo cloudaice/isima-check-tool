@@ -240,30 +240,36 @@ class Reason(BaseHandler):
     @web.asynchronous
     @gen.coroutine
     def post(self):
-        course_name = self.get_argument("course_name", None)
-        teacher_name = self.get_argument("teacher_name", None)
-        date = self.get_argument("date", None)
-        kind = self.get_argument("kind", None)
-        laptime = self.get_argument("laptime", None)
-        reason = self.get_argument("reason", None)
-        student_username = self.get_argument("student_username", None)
+        kwargs = dict(
+            course_name=self.get_argument("course_name", None),
+            teacher_name=self.get_argument("teacher_name", None),
+            date=self.get_argument("date", None),
+            kind=self.get_argument("kind", None),
+            laptime=self.get_argument("laptime", None),
+            reason=self.get_argument("reason", None),
+            student_username=self.get_argument("student_username", None)
+        )
+        resp = yield gen.Task(self.save_reason, **kwargs)
+        self.write(json_encode(resp))
+        self.finish()
+
+    def save_reason(self, callback=None, **kwargs):
         condition = {
-            "date": date,
-            "course_name": course_name,
-            "teacher_name": teacher_name,
+            "date": kwargs["date"],
+            "course_name": kwargs["course_name"],
+            "teacher_name": kwargs["teacher_name"],
         }
         docs = {
-            "date": date,
-            "course_name": course_name,
-            "teacher_name": teacher_name,
-            "student_username": student_username,
-            "kind": kind,
-            "laptime": laptime,
-            "reason": reason
+            "date": kwargs["date"],
+            "course_name": kwargs["course_name"],
+            "teacher_name": kwargs["teacher_name"],
+            "student_username": kwargs["student_username"],
+            "kind": kwargs["kind"],
+            "laptime": kwargs["laptime"],
+            "reason": kwargs["reason"]
         }
         self.db.Justifying.update(condition, docs, upsert=True)
-        self.write(json_encode({"status": "success"}))
-        self.finish()
+        callback({"status": "success"})
     
 
 class Session_absence(BaseHandler):
@@ -276,7 +282,6 @@ class Session_absence(BaseHandler):
             self.finish()
             return
         absences = json.loads(absences)
-        print type(absences)
         for check in absences:
             date = check["date"]
             teacher_name = check["teacher"]
