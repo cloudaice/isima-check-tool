@@ -4,7 +4,7 @@
 import json
 import os
 from lib import Mongo
-#from tornado import gen
+from tornado import gen
 from tornado import web
 from tornado import ioloop
 from tornado.httpserver import HTTPServer
@@ -86,77 +86,59 @@ class Login(BaseHandler):
         do something auth the password
         """
         pass
-
+    
+    @web.asynchronous
+    @gen.coroutine
     def post(self):
-        #判断浏览器是否启用了cookie
-        if not self.get_cookie("checking"):
-            self.write("please enable cookies!")
-            self.finish()
         username = self.get_argument("username", None)
         password = self.get_argument("password", None)
         rememberme = self.get_argument("rememberme", None)
+        resp = yield gen.Task(self.verify_user, username, password)
+        if resp["status"] == "success":
+            if not rememberme:
+                self.set_secure_cookie("isima_user", username, expires_days=1)
+            else:
+                self.set_secure_cookie("isima_user", username)
+        self.write(json_encode(resp))
+        self.finish()
+
+    def verify_user(self, username, password, callback=None):
         docs = self.db.Student.find({}, {"username": 1})
         docs = [doc["username"] for doc in docs]
         if username in docs:
             self.auth_password(password)
-            if not rememberme:
-                self.set_secure_cookie("isima_user", username, expires_days=1)
-            else:
-                self.set_secure_cookie("isima_user", username)
-            self.write(json_encode({
+            callback({
                 "status": "success",
                 "direct": "/user/" + username,
                 "type": "student"
-            }))
-            self.finish()
-            return
+            })
         docs = self.db.Teacher.find({}, {"username": 1})
         docs = [doc["username"] for doc in docs]
         if username in docs:
             self.auth_password(password)
-            if not rememberme:
-                self.set_secure_cookie("isima_user", username, expires_days=1)
-            else:
-                self.set_secure_cookie("isima_user", username)
-            self.write(json_encode({
+            callback({
                 "status": "success",
                 "direct": "/user/" + username,
                 "type": "teacher"
-            }))
-            self.finish()
-            return
+            })
         docs = self.db.Faculty.find({}, {"username": 1})
         docs = [doc["username"] for doc in docs]
         if username in docs:
             self.auth_password(password)
-            if not rememberme:
-                self.set_secure_cookie("isima_user", username, expires_days=1)
-            else:
-                self.set_secure_cookie("isima_user", username)
-            self.write(json_encode({
+            callback({
                 "status": "success",
                 "direct": "/user/" + username,
                 "type": "faculty"
-            }))
-            self.finish()
-            return
+            })
         docs = self.db.Admin.find({}, {"username": 1})
         docs = [doc["username"] for doc in docs]
         if username in docs:
             self.auth_password(password)
-            if not rememberme:
-                self.set_secure_cookie("isima_user", username, expires_days=1)
-            else:
-                self.set_secure_cookie("isima_user", username)
-            self.write(json_encode({
+            callback({
                 "status": "success",
                 "direct": "/user/" + username,
                 "type": "admin"
-            }))
-            self.finish()
-            return
-        self.write(json_encode({"status": 'error', "msg": "no this user"}))
-        self.finish()
+            })
 
 
 class Logout(BaseHandler):

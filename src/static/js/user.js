@@ -39,7 +39,8 @@ $(document).ready(function(){
         if(is_list) return '[' + json + ']';//Return numerical JSON
         return '{' + json + '}';//Return associative JSON
     }
-
+    
+    //load next absence page
     function load_absences(next_page){
         $.ajax({
             type: 'GET',
@@ -71,6 +72,7 @@ $(document).ready(function(){
         });
     }
 
+    // first load the absences list
     $('#myTab a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
@@ -80,6 +82,7 @@ $(document).ready(function(){
         }
     })
 
+    //when click previous or next
     $("#paper a").click(function(e){
         e.preventDefault();
         var node_text = $(this).text();
@@ -186,6 +189,7 @@ $(document).ready(function(){
                         }
                     });
                 });
+
                 $("*[data-name]").hover( function(){
                     console.debug("in");
                     var e=$(this);
@@ -222,6 +226,7 @@ $(document).ready(function(){
                     var e = $(this);
                     e.popover("hide");
                 });
+
                 $("*[data-name]").click(function(){
                     return false;
                 });
