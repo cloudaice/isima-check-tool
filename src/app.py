@@ -274,13 +274,19 @@ class Reason(BaseHandler):
 
 class Session_absence(BaseHandler):
     @web.authenticated
+    @web.asynchronous
+    @gen.coroutine
     def post(self):
         absences = self.get_argument("absences", None)
+        resp = None
         if not absences:
-            print "no absence"
-            self.write(json_encode({"status": "failed"}))
+            resp = {"status": "failed"}
+        else:
+            resp = yield gen.Task(self.save_absences, absences)
+            self.write(json_encode(resp))
             self.finish()
-            return
+
+    def save_absences(self, absences, callback=None):
         absences = json.loads(absences)
         for check in absences:
             date = check["date"]
@@ -291,18 +297,14 @@ class Session_absence(BaseHandler):
                                             "date": date,
                                             "course_name": course_name})
             if not doc:
-                print 'no doc'
-                self.write(json_encode({"status": "failed"}))
-                self.finish()
-                return
+                callback({"status": "failed"})
             if student_username not in doc["missing_students"]:
                 doc["missing_students"].append(student_username)
             doc["filled"] = True
             self.db.Session.update({"teacher_name": teacher_name,
                                     "date": date,
                                     "course_name": course_name}, doc)
-        self.write(json_encode({"status": "success"}))
-        self.finish()
+        callback({"status": "success"})
 
 
 def main():
