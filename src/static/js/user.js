@@ -106,7 +106,6 @@ $(document).ready(function(){
                                        " / " + courses[i].teacher_name + "</option>");
         }
         $("#course_select").show("slow");
-        console.debug(courses);
     }
 
     function strip(str){
@@ -191,9 +190,7 @@ $(document).ready(function(){
                 });
 
                 $("*[data-name]").hover( function(){
-                    console.debug("in");
                     var e=$(this);
-                    console.debug(e.text());
                     //$(this).unbind('mouseenter mouseleave');
                     var student_username = e.text();
                     $.ajax({
@@ -235,13 +232,11 @@ $(document).ready(function(){
                     if (!$(this).is(':checked')) {
                         //this.checked = confirm("Are you sure?");
                         //$(this).trigger("change");
-                        console.debug("check");
                         $(this).parent().next("td").children().removeClass("disabled");
                         $(this).parent().next("td").children().removeAttr("disabled");
                     }else{
                         $(this).parent().next("td").children().addClass("disabled");
                         $(this).parent().next("td").children().attr("disabled", 'true');
-                        console.debug("uncheck");
                     }
                 });
 
@@ -260,7 +255,6 @@ $(document).ready(function(){
                         var course_name = strip(checkText.substring(0, checkText.length - teacher_name.length - 2));
                         var student_username = e.parent().prev("td").prev("td").children().text();
                         var kind = $("#inputKind").val();
-                        console.debug(kind);
                         var laptime = $("#inputLaptime").val();
                         var reason = $("#inputReason").val();
                         var param = {
