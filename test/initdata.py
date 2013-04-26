@@ -50,20 +50,17 @@ def view_data():
 
 def random_group():
     groups = ['11', '12', '21', '22', '31', '32']
-    index = random.randint(0, 5)
-    return groups[index]
+    return random.choice(groups)
 
 
 def random_year():
     years = ["2012", "2013", "2014", "2015"]
-    index = random.randint(0, 3)
-    return years[index]
+    return random.choice(years)
 
 
 def random_hour():
     hours = ["08:00-10:00", "10:00-12:00", "08:00-09:30", "13:00-15:00", "15:00-17:00", "13:30-15:30"]
-    index = random.randint(0, 5)
-    return hours[index]
+    return random.choice(hours)
 
 
 def CreateStudent():
