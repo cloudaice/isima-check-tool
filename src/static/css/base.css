@@ -40,6 +40,15 @@ body {
     padding-bottom: 40px;
 }
 
+.container {
+    width: auto;
+    max-width: 680px;
+}
+
+.container .credit {
+    margin: 20px 0;
+}
+
 /* Custom container */
 .container-narrow {
     margin: 0 auto;
