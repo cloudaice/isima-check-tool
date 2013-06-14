@@ -141,7 +141,7 @@ $(document).ready(function(){
             success: function(data){
                 var student_table = "<hr><table class='table table-striped'>";
                 student_table += "<caption>Students</caption>";
-                student_table += "<thead><tr><th>Name</th><th>Fill</th><th>Reason</th></tr></thead>";
+                student_table += "<thead><tr><th>Name</th><th>Absence</th><th>Reason</th></tr></thead>";
                 student_table += "<tbody>";
                 for(var i = 0; i < data.length; i++){
                     student_name = data[i];
